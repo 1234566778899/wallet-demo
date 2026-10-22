@@ -20,20 +20,20 @@ const puedeWallet = /iPhone|iPad|iPod/.test(ua) || (navigator.maxTouchPoints > 1
 const useStyles = makeStyles({
   page: {
     minHeight: '100vh',
-    background: 'radial-gradient(ellipse at top, rgba(20,20,21,.2), #141415 70%), url(/brand/bokeh.jpg) top center/cover no-repeat, #141415',
+    background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,162,39,.22), transparent 70%), #f6f5f2',
   },
   main: { maxWidth: '420px', margin: '0 auto', padding: '28px 16px 48px', display: 'flex', flexDirection: 'column', gap: '18px' },
   brand: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' },
-  logo: { width: '88px', height: '88px', filter: 'drop-shadow(0 10px 30px rgba(201,162,39,.35))' },
+  logo: { width: '88px', height: '88px', filter: 'drop-shadow(0 10px 24px rgba(120,90,10,.35))' },
   head: { textAlign: 'center' },
   title: { ...display, fontSize: '34px', margin: '0 0 6px', lineHeight: 1.1 },
   muted: { color: tokens.colorNeutralForeground3, textAlign: 'center' },
-  form: { padding: '24px', gap: '16px', border: `1px solid ${tokens.colorNeutralStroke2}`, background: 'rgba(27,27,29,.82)', backdropFilter: 'blur(14px)' },
+  form: { padding: '24px', gap: '16px', border: `1px solid ${tokens.colorNeutralStroke2}`, background: tokens.colorNeutralBackground1, boxShadow: tokens.shadow8 },
   perks: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' },
   perk: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', textAlign: 'center', fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground2 },
   perkImg: { width: '44px', height: '44px', objectFit: 'contain' },
-  qrCard: { padding: '18px', alignItems: 'center', gap: '8px', border: `1px solid ${tokens.colorNeutralStroke2}` },
-  qr: { background: '#fff', padding: '12px', borderRadius: tokens.borderRadiusLarge },
+  qrCard: { padding: '18px', alignItems: 'center', gap: '8px', boxShadow: tokens.shadow8 },
+  qr: { background: '#fff', padding: '12px', borderRadius: tokens.borderRadiusLarge, border: `1px solid ${tokens.colorNeutralStroke2}` },
   code: { fontFamily: tokens.fontFamilyMonospace, color: tokens.colorNeutralForeground3 },
   wallet: {
     background: '#000', color: '#fff', border: '1px solid #3a3a3c', minHeight: '48px', fontSize: tokens.fontSizeBase400,
@@ -110,7 +110,7 @@ function Registro({ onCreada }) {
         <div className={s.perk}><img src="/brand/regalo.png" alt="" className={s.perkImg} />El 10.º es gratis</div>
         <div className={s.perk}><img src="/brand/check.png" alt="" className={s.perkImg} />Siempre en tu Wallet</div>
       </div>
-      <Card as="form" className={s.form} onSubmit={crear} appearance="filled-alternative">
+      <Card as="form" className={s.form} onSubmit={crear}>
         {err && <MessageBar intent="error"><MessageBarBody>{err}</MessageBarBody></MessageBar>}
         <Field label="Nombre" required><Input size="large" autoComplete="name" value={nombre} onChange={(_, d) => setNombre(d.value)} /></Field>
         <Field label="Teléfono" hint="Opcional"><Input size="large" type="tel" autoComplete="tel" value={tel} onChange={(_, d) => setTel(d.value)} /></Field>

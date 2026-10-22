@@ -5,7 +5,7 @@ import {
 } from '@fluentui/react-components';
 import { QrCodeRegular, PeopleRegular, HistoryRegular, SignOutRegular, MailRegular, LockClosedRegular } from '@fluentui/react-icons';
 import { sb } from '../shared/supabase.js';
-import { GOLD, display } from '../shared/Root.jsx';
+import { display } from '../shared/Root.jsx';
 import { TOASTER } from './actions.js';
 import { Scan } from './Scan.jsx';
 import { Clients } from './Clients.jsx';
@@ -24,14 +24,14 @@ const useStyles = makeStyles({
   heroLogo: { width: '96px', height: '96px', marginBottom: '18px', '@media (max-width: 860px)': { width: '64px', height: '64px', marginBottom: '10px' } },
   heroTitle: { ...display, fontSize: '44px', lineHeight: 1.05, color: '#f5f5f7', margin: 0, '@media (max-width: 860px)': { fontSize: '28px' } },
   heroText: { color: '#c7c7cc', marginTop: '10px', maxWidth: '420px', fontSize: tokens.fontSizeBase400 },
-  formSide: { display: 'grid', placeItems: 'center', padding: '32px 16px' },
+  formSide: { display: 'grid', placeItems: 'center', padding: '32px 16px', background: tokens.colorNeutralBackground1 },
   loginCard: { width: '100%', maxWidth: '380px', padding: '32px', gap: '18px' },
   loginTitle: { ...display, fontSize: '28px', margin: '0 0 6px' },
   brand: { display: 'flex', alignItems: 'center', gap: '10px' },
   brandLogo: { width: '34px', height: '34px' },
-  brandName: { ...display, fontSize: '20px', color: GOLD },
+  brandName: { ...display, fontSize: '20px', color: '#111113' },
   header: {
-    position: 'sticky', top: 0, zIndex: 10, background: 'rgba(20,20,21,.86)', backdropFilter: 'saturate(160%) blur(18px)',
+    position: 'sticky', top: 0, zIndex: 10, background: 'rgba(255,255,255,.86)', backdropFilter: 'saturate(160%) blur(18px)',
     borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
   },
   bar: { maxWidth: '1040px', margin: '0 auto', padding: '0 16px', height: '60px', display: 'flex', alignItems: 'center', gap: '12px' },
@@ -118,7 +118,7 @@ function Login() {
         <Text className={s.heroText}>Escanea la tarjeta del cliente, suma sus sellos y regálale su corte número 10.</Text>
       </section>
       <div className={s.formSide}>
-        <Card as="form" className={s.loginCard} onSubmit={entrar} appearance="filled-alternative">
+        <Card as="form" className={s.loginCard} onSubmit={entrar} appearance="subtle">
           <div>
             <h2 className={s.loginTitle}>Iniciar sesión</h2>
             <Text style={{ color: tokens.colorNeutralForeground3 }}>Panel del equipo de El Filo</Text>

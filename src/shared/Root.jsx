@@ -1,4 +1,4 @@
-import { FluentProvider, createDarkTheme, tokens } from '@fluentui/react-components';
+import { FluentProvider, createLightTheme, tokens } from '@fluentui/react-components';
 
 // Rampa de marca dorada El Filo (#C9A227 en el 90)
 const gold = {
@@ -7,31 +7,29 @@ const gold = {
 };
 
 export const theme = {
-  ...createDarkTheme(gold),
+  ...createLightTheme(gold),
   colorBrandBackground: gold[90],
-  colorBrandBackgroundHover: gold[100],
-  colorBrandBackgroundPressed: gold[80],
+  colorBrandBackgroundHover: gold[80],
+  colorBrandBackgroundPressed: gold[70],
   colorBrandBackgroundSelected: gold[90],
   colorNeutralForegroundOnBrand: '#111113',
-  colorBrandForeground1: gold[100],
-  colorBrandForeground2: gold[110],
-  colorBrandForegroundLink: gold[100],
-  colorBrandForegroundLinkHover: gold[120],
-  colorCompoundBrandStroke: gold[90],
+  colorBrandForeground1: gold[60],
+  colorBrandForeground2: gold[50],
+  colorBrandForegroundLink: gold[60],
+  colorBrandForegroundLinkHover: gold[50],
+  colorCompoundBrandStroke: gold[80],
+  colorCompoundBrandForeground1: gold[60],
   colorCompoundBrandBackground: gold[90],
-  colorNeutralBackground1: '#1b1b1d',
-  colorNeutralBackground1Hover: '#242427',
-  colorNeutralBackground1Pressed: '#202022',
-  colorNeutralBackground2: '#141415',
-  colorNeutralBackground3: '#0f0f10',
-  colorNeutralStroke2: '#2a2a2d',
+  colorNeutralBackground2: '#f6f5f2',
+  colorNeutralBackground3: '#efede8',
   fontFamilyBase: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
 };
 
 export const GOLD = gold[90];
+export const GOLD_TEXT = gold[60]; // dorado legible sobre fondo claro
 export const display = { fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, letterSpacing: '-0.01em' };
 
-// La marca es oscura: el panel y la tarjeta usan siempre el tema oscuro dorado
+// Tema claro con el dorado de la marca; la tarjeta de sellos se mantiene oscura como el pase
 export function Root({ children }) {
   return (
     <FluentProvider theme={theme} style={{ minHeight: '100vh', background: tokens.colorNeutralBackground2 }}>

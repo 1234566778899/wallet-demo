@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   card: { padding: '20px', gap: '14px' },
   reader: {
     width: '100%', aspectRatio: '1', borderRadius: tokens.borderRadiusLarge, overflow: 'hidden',
-    background: `radial-gradient(circle at 50% 40%, rgba(201,162,39,.10), transparent 60%), ${tokens.colorNeutralBackground3}`, display: 'grid', placeItems: 'center',
+    background: `radial-gradient(circle at 50% 40%, rgba(201,162,39,.14), transparent 62%), ${tokens.colorNeutralBackground3}`, display: 'grid', placeItems: 'center',
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     '& video': { objectFit: 'cover' },
   },
