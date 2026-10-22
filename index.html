@@ -170,6 +170,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
       <p class="sub">10 sellos = 1 corte gratis.</p>
       <div class="toolbar">
         <input class="f" id="search" placeholder="Buscar por nombre, teléfono o código">
+        <button class="btn sec" id="signupQrBtn">QR registro</button>
         <button class="btn" id="newBtn">Nuevo</button>
       </div>
       <div class="list" id="clientList"></div>
@@ -300,10 +301,21 @@ async function act(fn, code){
     ? '✅ Corte gratis canjeado. La tarjeta empieza de nuevo.'
     : c.sellos >= META ? `✅ Sello ${c.sellos}/${META}. ¡Su próximo corte es gratis!` : `✅ Atendido. Lleva ${c.sellos}/${META} sellos.`;
   renderResult(c, msg, 'ok');
+  pushWallet(c.codigo);
   // Si la acción vino del modal, refrescarlo
   if (!$('#modal').classList.contains('hidden')) openClient(c);
   loadClients(true);
 }
+
+// Avisa a Apple Wallet para que el pase del cliente se actualice
+async function pushWallet(codigo){
+  const { data:{ session } } = await sb.auth.getSession();
+  fetch('/api/push', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${session?.access_token}` }, body:JSON.stringify({ codigo }) })
+    .then(r => r.json()).then(r => { if (r.sent) toast('Tarjeta de Wallet actualizada'); }).catch(()=>{});
+}
+
+const cardUrl = c => `${location.origin}/tarjeta?t=${c.token}`;
+async function copyLink(url){ try{ await navigator.clipboard.writeText(url); toast('Link copiado'); }catch{ prompt('Copia el link:', url); } }
 
 // ---------- Clientes ----------
 async function loadClients(silent){
@@ -339,9 +351,23 @@ function openClient(c){
     <div class="actions">
       ${full ? `<button class="btn gold block" onclick="act('canjear_corte','${c.codigo}')">Canjear corte gratis</button>`
              : `<button class="btn block" onclick="act('registrar_sello','${c.codigo}')">Marcar como atendido (+1 sello)</button>`}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn sec" onclick="copyLink('${cardUrl(c)}')">Copiar link</button>
+        <a class="btn sec" style="text-align:center;text-decoration:none" target="_blank" rel="noopener"
+           href="https://wa.me/${(c.telefono||'').replace(/\D/g,'')}?text=${encodeURIComponent('Hola ' + c.nombre + ', aquí está tu tarjeta de Barbería El Filo para agregarla a tu Wallet: ' + cardUrl(c))}">WhatsApp</a>
+      </div>
     </div>`);
   new QRCode($('#qr'), { text:c.codigo, width:180, height:180, correctLevel:QRCode.CorrectLevel.M });
 }
+
+$('#signupQrBtn').onclick = () => {
+  const url = `${location.origin}/tarjeta`;
+  openModal(`<button class="close" onclick="closeModal()">✕</button><h2>QR de registro</h2>
+    <p class="sub" style="margin:0">Ponlo en el mostrador: el cliente lo escanea, crea su tarjeta y la agrega a Apple Wallet.</p>
+    <div class="qrbox" id="qr"></div>
+    <button class="btn sec block" onclick="copyLink('${url}')">Copiar link</button>`);
+  new QRCode($('#qr'), { text:url, width:200, height:200, correctLevel:QRCode.CorrectLevel.M });
+};
 
 $('#newBtn').onclick = () => {
   openModal(`<button class="close" onclick="closeModal()">✕</button><h2>Nuevo cliente</h2>

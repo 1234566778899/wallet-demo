@@ -1,3 +1,6 @@
 .DS_Store
 .vercel
 .pghost
+node_modules
+.env*
+*.key

@@ -1,0 +1,17 @@
+{
+  "name": "wallet-demo",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1234566778899/wallet-demo.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/1234566778899/wallet-demo/issues"
+  },
+  "homepage": "https://github.com/1234566778899/wallet-demo#readme",
+  "dependencies": {
+    "passkit-generator": "^3.7.0"
+  },
+  "private": true
+}

@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/wallet/:path*", "destination": "/api/wallet?path=:path*" }
+  ],
+  "functions": {
+    "api/*.js": { "includeFiles": "{assets/pass/**,certs/**}" }
+  }
+}
