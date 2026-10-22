@@ -15,20 +15,19 @@ export function buildPass(c, webServiceURL) {
     webServiceURL,
     organizationName: 'Barbería El Filo',
     description: 'Tarjeta de fidelidad Barbería El Filo',
+    logoText: 'Barbería El Filo',
     backgroundColor: 'rgb(17,17,19)',
     foregroundColor: 'rgb(245,245,247)',
     labelColor: 'rgb(201,162,39)',
     storeCard: {
       headerFields: [{ key: 'sellos', label: 'SELLOS', value: `${n}/${META}`, changeMessage: 'Ahora tienes %@ sellos ✂️' }],
-      secondaryFields: [
-        { key: 'cliente', label: 'CLIENTE', value: c.nombre },
-        { key: 'premio', label: 'PREMIO', value: full ? '¡Corte gratis!' : `Faltan ${META - n}`, textAlignment: 'PKTextAlignmentRight', changeMessage: '%@' },
-      ],
+      secondaryFields: [{ key: 'cliente', label: 'CLIENTE', value: c.nombre }],
       auxiliaryFields: [
-        { key: 'visitas', label: 'VISITAS', value: c.total_visitas },
-        { key: 'gratis', label: 'CORTES GRATIS', value: c.cortes_gratis, textAlignment: 'PKTextAlignmentRight' },
+        { key: 'premio', label: 'CORTE GRATIS', value: full ? '¡Ya es tuyo!' : `Faltan ${META - n}`, textAlignment: 'PKTextAlignmentRight', changeMessage: '%@' },
       ],
       backFields: [
+        { key: 'visitas', label: 'Visitas totales', value: c.total_visitas },
+        { key: 'gratis', label: 'Cortes gratis canjeados', value: c.cortes_gratis },
         { key: 'como', label: '¿Cómo funciona?', value: `Muestra este QR cada vez que te cortes el pelo. Al juntar ${META} sellos tu siguiente corte es gratis.` },
         { key: 'codigo', label: 'Código de cliente', value: c.codigo },
       ],
