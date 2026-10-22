@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import {
   Avatar, Badge, Card, Skeleton, SkeletonItem, Table, TableBody, TableCell, TableCellLayout, TableHeader,
-  TableHeaderCell, TableRow, Text, Title2, makeStyles, tokens,
+  TableHeaderCell, TableRow, Text, makeStyles, tokens,
 } from '@fluentui/react-components';
-import { CutRegular, GiftRegular } from '@fluentui/react-icons';
 import { sb } from '../shared/supabase.js';
+import { PageHeader } from '../shared/PageHeader.jsx';
+import { GOLD } from '../shared/Root.jsx';
 
 const useStyles = makeStyles({
   stats: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' },
-  stat: { padding: '16px' },
-  num: { fontSize: '28px', fontWeight: tokens.fontWeightBold, lineHeight: 1.1, '@media (max-width: 480px)': { fontSize: '22px' } },
-  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden', boxShadow: tokens.shadow4 },
+  stat: { padding: '18px', gap: '4px', position: 'relative', overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
+  statArt: { position: 'absolute', right: '-6px', bottom: '-8px', width: '64px', opacity: 0.18 },
+  ico: { width: '36px', height: '36px', borderRadius: '50%', display: 'grid', placeItems: 'center', background: '#111113', border: `1px solid ${GOLD}55`, '& img': { width: '70%', height: '70%', objectFit: 'contain' } },
+  num: { color: GOLD, fontSize: '30px', fontWeight: tokens.fontWeightBold, lineHeight: 1.1, '@media (max-width: 480px)': { fontSize: '22px' } },
+  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusXLarge, overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
   hideSm: { '@media (max-width: 640px)': { display: 'none' } },
   empty: { padding: '40px', textAlign: 'center', color: tokens.colorNeutralForeground3 },
 });
@@ -32,18 +35,18 @@ export function Activity() {
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
   const deHoy = (visitas || []).filter(v => new Date(v.created_at) >= hoy);
   const stats = [
-    ['Atendidos hoy', deHoy.length],
-    ['Cortes gratis hoy', deHoy.filter(v => v.tipo === 'canje').length],
-    ['Clientes', total],
+    ['Atendidos hoy', deHoy.length, 'tijeras'],
+    ['Cortes gratis hoy', deHoy.filter(v => v.tipo === 'canje').length, 'regalo'],
+    ['Clientes', total, 'estrella'],
   ];
 
   return (
     <>
-      <Title2 as="h1" block>Actividad</Title2>
-      <Text block style={{ color: tokens.colorNeutralForeground3, marginBottom: 20 }}>Visitas registradas recientemente.</Text>
+      <PageHeader title="Actividad" subtitle="Visitas registradas recientemente." />
       <div className={s.stats}>
-        {stats.map(([label, n]) => (
+        {stats.map(([label, n, art]) => (
           <Card key={label} className={s.stat}>
+            <img src={`/brand/${art}.png`} alt="" className={s.statArt} />
             {visitas === null ? <Skeleton><SkeletonItem size={28} /></Skeleton> : <div className={s.num}>{n}</div>}
             <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{label}</Text>
           </Card>
@@ -62,12 +65,12 @@ export function Activity() {
             {(visitas || []).map(v => (
               <TableRow key={v.id}>
                 <TableCell>
-                  <TableCellLayout media={<Avatar icon={v.tipo === 'canje' ? <GiftRegular /> : <CutRegular />} color={v.tipo === 'canje' ? 'marigold' : 'neutral'} />}
+                  <TableCellLayout media={<span className={s.ico}><img src={v.tipo === 'canje' ? '/brand/regalo.png' : '/brand/tijeras.png'} alt="" /></span>}
                     description={fmt.format(new Date(v.created_at))}>{v.clientes?.nombre || 'Cliente'}</TableCellLayout>
                 </TableCell>
                 <TableCell className={s.hideSm}>{v.barbero}</TableCell>
                 <TableCell>
-                  {v.tipo === 'canje' ? <Badge appearance="filled" color="warning">Corte gratis</Badge> : <Badge appearance="tint" color="brand">+1 sello</Badge>}
+                  {v.tipo === 'canje' ? <Badge appearance="filled" color="brand">Corte gratis</Badge> : <Badge appearance="tint" color="brand">+1 sello</Badge>}
                 </TableCell>
               </TableRow>
             ))}

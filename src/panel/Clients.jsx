@@ -3,18 +3,19 @@ import { QRCodeSVG } from 'qrcode.react';
 import {
   Avatar, Badge, Button, Dialog, DialogActions, DialogBody, DialogContent, DialogSurface, DialogTitle, DialogTrigger,
   Field, Input, MessageBar, MessageBarBody, ProgressBar, SearchBox, Table, TableBody, TableCell, TableCellLayout,
-  TableHeader, TableHeaderCell, TableRow, Text, Title2, makeStyles, tokens,
+  TableHeader, TableHeaderCell, TableRow, Text, makeStyles, tokens,
 } from '@fluentui/react-components';
 import {
   AddRegular, QrCodeRegular, LinkRegular, ChatRegular, CheckmarkCircleRegular, GiftRegular, DismissRegular,
 } from '@fluentui/react-icons';
 import { sb, META } from '../shared/supabase.js';
 import { StampCard } from '../shared/StampCard.jsx';
+import { PageHeader } from '../shared/PageHeader.jsx';
 import { registrar, pushWallet, useNotify, cardUrl, copiar } from './actions.js';
 
 const useStyles = makeStyles({
   toolbar: { display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap', '& > :first-child': { flex: '1 1 220px', maxWidth: 'none' } },
-  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden', boxShadow: tokens.shadow4 },
+  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusXLarge, overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
   row: { cursor: 'pointer' },
   hideSm: { '@media (max-width: 640px)': { display: 'none' } },
   progress: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px' },
@@ -37,8 +38,7 @@ export function Clients({ clientes, onChange }) {
 
   return (
     <>
-      <Title2 as="h1" block>Clientes</Title2>
-      <Text block style={{ color: tokens.colorNeutralForeground3, marginBottom: 20 }}>{META} sellos = 1 corte gratis.</Text>
+      <PageHeader title="Clientes" subtitle={`${clientes.length} tarjetas · ${META} sellos = 1 corte gratis`} />
       <div className={s.toolbar}>
         <SearchBox placeholder="Buscar por nombre, teléfono o código" value={q} onChange={(_, d) => setQ(d.value)} />
         <QrRegistro />
@@ -62,7 +62,7 @@ export function Clients({ clientes, onChange }) {
                 </TableCell>
                 <TableCell className={s.hideSm}>{c.telefono || '—'}</TableCell>
                 <TableCell>
-                  {c.sellos >= META ? <Badge appearance="filled" color="warning" icon={<GiftRegular />}>Corte gratis</Badge> : (
+                  {c.sellos >= META ? <Badge appearance="filled" color="brand" size="large" icon={<GiftRegular />}>Corte gratis</Badge> : (
                     <div className={s.progress}>
                       <ProgressBar value={c.sellos / META} thickness="large" style={{ flex: 1 }} />
                       <Text size={200}>{c.sellos}/{META}</Text>

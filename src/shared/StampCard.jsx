@@ -1,35 +1,32 @@
 import { makeStyles, mergeClasses, tokens } from '@fluentui/react-components';
-import { Checkmark24Filled, Star24Filled } from '@fluentui/react-icons';
 import { META } from './supabase.js';
-
-const GOLD = '#c9a227';
+import { GOLD, display } from './Root.jsx';
 
 const useStyles = makeStyles({
   pass: {
-    borderRadius: '18px',
-    padding: '18px 20px 20px',
-    color: '#f5f5f7',
-    background: 'linear-gradient(150deg,#2a2a2d 0%,#111113 70%)',
-    boxShadow: tokens.shadow16,
+    position: 'relative', overflow: 'hidden', borderRadius: '20px', padding: '18px 20px 20px', color: '#f5f5f7',
+    background: `linear-gradient(160deg, rgba(17,17,19,.55), rgba(17,17,19,.92)), url(/brand/textura.jpg) center/cover, #111113`,
+    border: '1px solid rgba(201,162,39,.28)',
+    boxShadow: '0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06)',
   },
   top: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  brand: { display: 'flex', alignItems: 'center', gap: '8px', fontWeight: tokens.fontWeightSemibold, color: GOLD },
-  pole: {
-    width: '12px', height: '26px', borderRadius: '6px',
-    background: 'repeating-linear-gradient(135deg,#f5f5f7 0 5px,#d72828 5px 10px)',
-    boxShadow: `0 -3px 0 ${GOLD}, 0 3px 0 ${GOLD}`,
-  },
-  label: { fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', color: GOLD, fontWeight: tokens.fontWeightSemibold },
-  count: { fontSize: '22px', fontWeight: tokens.fontWeightSemibold, textAlign: 'right', lineHeight: 1.1 },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px 14px', margin: '20px auto 18px', maxWidth: '290px' },
+  brand: { display: 'flex', alignItems: 'center', gap: '10px' },
+  logo: { width: '42px', height: '42px' },
+  name: { ...display, fontSize: '19px', color: GOLD, lineHeight: 1 },
+  tag: { fontSize: '10px', letterSpacing: '.22em', textTransform: 'uppercase', color: '#a1a1a6', marginTop: '3px' },
+  label: { fontSize: '10px', letterSpacing: '.12em', textTransform: 'uppercase', color: GOLD, fontWeight: tokens.fontWeightSemibold },
+  count: { fontSize: '24px', fontWeight: tokens.fontWeightSemibold, textAlign: 'right', lineHeight: 1.1 },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px 14px', margin: '22px auto 20px', maxWidth: '300px' },
   stamp: {
     aspectRatio: '1', borderRadius: '50%', display: 'grid', placeItems: 'center',
-    border: '2px solid #48484a', color: '#636366', fontSize: '13px', transitionProperty: 'transform, background', transitionDuration: '.25s',
+    border: '1.5px solid #46464a', background: 'rgba(17,17,19,.75)', color: '#6e6e73', fontSize: '13px',
+    transitionProperty: 'transform, box-shadow', transitionDuration: '.3s',
   },
-  on: { border: '0', background: '#f5f5f7', color: '#111113' },
-  gift: { borderColor: GOLD, color: GOLD },
-  giftOn: { background: GOLD, color: '#111113' },
-  pop: { transform: 'scale(1.15)' },
+  on: { borderColor: GOLD, background: '#1c1c1e', boxShadow: '0 0 14px rgba(201,162,39,.25)' },
+  gift: { borderColor: GOLD },
+  icon: { width: '74%', height: '74%', objectFit: 'contain' },
+  dim: { opacity: 0.45, filter: 'grayscale(.85)' },
+  pop: { transform: 'scale(1.18)', boxShadow: '0 0 24px rgba(201,162,39,.6)' },
   bottom: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '12px' },
   value: { fontSize: '19px', marginTop: '2px' },
   right: { textAlign: 'right' },
@@ -42,15 +39,19 @@ export function StampCard({ cliente, pop = -1 }) {
   return (
     <div className={s.pass}>
       <div className={s.top}>
-        <div className={s.brand}><span className={s.pole} />Barbería El Filo</div>
+        <div className={s.brand}>
+          <img src="/brand/logo.png" alt="" className={s.logo} />
+          <div><div className={s.name}>El Filo</div><div className={s.tag}>Barbería</div></div>
+        </div>
         <div><div className={mergeClasses(s.label, s.right)}>Sellos</div><div className={s.count}>{n}/{META}</div></div>
       </div>
       <div className={s.grid}>
         {Array.from({ length: META }, (_, i) => {
           const on = i < n, gift = i === META - 1;
           return (
-            <div key={i} className={mergeClasses(s.stamp, gift && s.gift, on && s.on, gift && on && s.giftOn, i === pop && s.pop)}>
-              {gift ? <Star24Filled /> : on ? <Checkmark24Filled /> : i + 1}
+            <div key={i} className={mergeClasses(s.stamp, gift && s.gift, on && s.on, i === pop && s.pop)}>
+              {gift ? <img src="/brand/regalo.png" alt="Corte gratis" className={mergeClasses(s.icon, !on && s.dim)} />
+                : on ? <img src="/brand/tijeras.png" alt="Sello" className={s.icon} /> : i + 1}
             </div>
           );
         })}
