@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import {
-  Button, Card, Field, Input, Link, MessageBar, MessageBarBody, Spinner, Text, makeStyles, tokens,
+  Avatar, Button, Card, Field, Input, Link, MessageBar, MessageBarBody, Spinner, Text, Title1, makeStyles, tokens,
 } from '@fluentui/react-components';
-import { WalletRegular, PersonAddRegular } from '@fluentui/react-icons';
+import { WalletRegular, PersonAddRegular, CutRegular, GiftRegular } from '@fluentui/react-icons';
 import { sb } from '../shared/supabase.js';
 import { StampCard } from '../shared/StampCard.jsx';
-import { display } from '../shared/Root.jsx';
 
 const KEY = 'elfilo_token';
 const store = {
@@ -20,19 +19,17 @@ const puedeWallet = /iPhone|iPad|iPod/.test(ua) || (navigator.maxTouchPoints > 1
 const useStyles = makeStyles({
   page: {
     minHeight: '100vh',
-    background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,162,39,.22), transparent 70%), #f6f5f2',
+    background: tokens.colorNeutralBackground2,
   },
   main: { maxWidth: '420px', margin: '0 auto', padding: '28px 16px 48px', display: 'flex', flexDirection: 'column', gap: '18px' },
   brand: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' },
-  logo: { width: '88px', height: '88px', filter: 'drop-shadow(0 10px 24px rgba(120,90,10,.35))' },
+  logo: { width: '72px', height: '72px' },
   head: { textAlign: 'center' },
-  title: { ...display, fontSize: '34px', margin: '0 0 6px', lineHeight: 1.1 },
   muted: { color: tokens.colorNeutralForeground3, textAlign: 'center' },
-  form: { padding: '24px', gap: '16px', border: `1px solid ${tokens.colorNeutralStroke2}`, background: tokens.colorNeutralBackground1, boxShadow: tokens.shadow8 },
+  form: { padding: '24px', gap: '16px' },
   perks: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' },
   perk: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', textAlign: 'center', fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground2 },
-  perkImg: { width: '44px', height: '44px', objectFit: 'contain' },
-  qrCard: { padding: '18px', alignItems: 'center', gap: '8px', boxShadow: tokens.shadow8 },
+  qrCard: { padding: '18px', alignItems: 'center', gap: '8px' },
   qr: { background: '#fff', padding: '12px', borderRadius: tokens.borderRadiusLarge, border: `1px solid ${tokens.colorNeutralStroke2}` },
   code: { fontFamily: tokens.fontFamilyMonospace, color: tokens.colorNeutralForeground3 },
   wallet: {
@@ -102,13 +99,13 @@ function Registro({ onCreada }) {
   return (
     <>
       <div className={s.head}>
-        <h1 className={s.title}>Tu tarjeta de cortes</h1>
+        <Title1 as="h1" block align="center">Tu tarjeta de cortes</Title1>
         <Text className={s.muted} block>Junta 10 sellos y tu siguiente corte es gratis.</Text>
       </div>
       <div className={s.perks}>
-        <div className={s.perk}><img src="/brand/tijeras.png" alt="" className={s.perkImg} />Un sello por cada corte</div>
-        <div className={s.perk}><img src="/brand/regalo.png" alt="" className={s.perkImg} />El 10.º es gratis</div>
-        <div className={s.perk}><img src="/brand/check.png" alt="" className={s.perkImg} />Siempre en tu Wallet</div>
+        <div className={s.perk}><Avatar icon={<CutRegular />} color="brand" size={40} />Un sello por cada corte</div>
+        <div className={s.perk}><Avatar icon={<GiftRegular />} color="marigold" size={40} />El 10.º es gratis</div>
+        <div className={s.perk}><Avatar icon={<WalletRegular />} color="teal" size={40} />Siempre en tu Wallet</div>
       </div>
       <Card as="form" className={s.form} onSubmit={crear}>
         {err && <MessageBar intent="error"><MessageBarBody>{err}</MessageBarBody></MessageBar>}

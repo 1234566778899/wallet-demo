@@ -5,15 +5,13 @@ import {
 } from '@fluentui/react-components';
 import { sb } from '../shared/supabase.js';
 import { PageHeader } from '../shared/PageHeader.jsx';
-import { GOLD, GOLD_TEXT } from '../shared/Root.jsx';
+import { CutRegular, GiftRegular, PeopleRegular } from '@fluentui/react-icons';
 
 const useStyles = makeStyles({
   stats: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' },
-  stat: { padding: '18px', gap: '4px', position: 'relative', overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
-  statArt: { position: 'absolute', right: '-6px', bottom: '-8px', width: '64px', opacity: 0.28 },
-  ico: { width: '36px', height: '36px', borderRadius: '50%', display: 'grid', placeItems: 'center', background: '#111113', border: `1px solid ${GOLD}55`, '& img': { width: '70%', height: '70%', objectFit: 'contain' } },
-  num: { color: GOLD_TEXT, fontSize: '30px', fontWeight: tokens.fontWeightBold, lineHeight: 1.1, '@media (max-width: 480px)': { fontSize: '22px' } },
-  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusXLarge, overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
+  stat: { padding: '16px', gap: '4px', flexDirection: 'row', alignItems: 'center' },
+  num: { fontSize: '28px', fontWeight: tokens.fontWeightBold, lineHeight: 1.1, '@media (max-width: 480px)': { fontSize: '22px' } },
+  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden', boxShadow: tokens.shadow4 },
   hideSm: { '@media (max-width: 640px)': { display: 'none' } },
   empty: { padding: '40px', textAlign: 'center', color: tokens.colorNeutralForeground3 },
 });
@@ -35,20 +33,22 @@ export function Activity() {
   const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
   const deHoy = (visitas || []).filter(v => new Date(v.created_at) >= hoy);
   const stats = [
-    ['Atendidos hoy', deHoy.length, 'tijeras'],
-    ['Cortes gratis hoy', deHoy.filter(v => v.tipo === 'canje').length, 'regalo'],
-    ['Clientes', total, 'estrella'],
+    ['Atendidos hoy', deHoy.length, <CutRegular />, 'brand'],
+    ['Cortes gratis hoy', deHoy.filter(v => v.tipo === 'canje').length, <GiftRegular />, 'marigold'],
+    ['Clientes', total, <PeopleRegular />, 'teal'],
   ];
 
   return (
     <>
       <PageHeader title="Actividad" subtitle="Visitas registradas recientemente." />
       <div className={s.stats}>
-        {stats.map(([label, n, art]) => (
+        {stats.map(([label, n, icon, color]) => (
           <Card key={label} className={s.stat}>
-            <img src={`/brand/${art}.png`} alt="" className={s.statArt} />
-            {visitas === null ? <Skeleton><SkeletonItem size={28} /></Skeleton> : <div className={s.num}>{n}</div>}
-            <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{label}</Text>
+            <Avatar icon={icon} color={color} size={40} className={s.hideSm} />
+            <div style={{ marginLeft: 8 }}>
+              {visitas === null ? <Skeleton><SkeletonItem size={28} /></Skeleton> : <div className={s.num}>{n}</div>}
+              <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{label}</Text>
+            </div>
           </Card>
         ))}
       </div>
@@ -65,12 +65,12 @@ export function Activity() {
             {(visitas || []).map(v => (
               <TableRow key={v.id}>
                 <TableCell>
-                  <TableCellLayout media={<span className={s.ico}><img src={v.tipo === 'canje' ? '/brand/regalo.png' : '/brand/tijeras.png'} alt="" /></span>}
+                  <TableCellLayout media={<Avatar icon={v.tipo === 'canje' ? <GiftRegular /> : <CutRegular />} color={v.tipo === 'canje' ? 'marigold' : 'brand'} />}
                     description={fmt.format(new Date(v.created_at))}>{v.clientes?.nombre || 'Cliente'}</TableCellLayout>
                 </TableCell>
                 <TableCell className={s.hideSm}>{v.barbero}</TableCell>
                 <TableCell>
-                  {v.tipo === 'canje' ? <Badge appearance="filled" color="brand">Corte gratis</Badge> : <Badge appearance="tint" color="brand">+1 sello</Badge>}
+                  {v.tipo === 'canje' ? <Badge appearance="filled" color="success" icon={<GiftRegular />}>Corte gratis</Badge> : <Badge appearance="tint" color="brand">+1 sello</Badge>}
                 </TableCell>
               </TableRow>
             ))}

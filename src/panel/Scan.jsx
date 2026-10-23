@@ -3,7 +3,7 @@ import { Html5Qrcode } from 'html5-qrcode';
 import {
   Button, Card, Input, MessageBar, MessageBarBody, Text, makeStyles, tokens,
 } from '@fluentui/react-components';
-import { CameraRegular, CameraOffRegular, SearchRegular, CheckmarkCircleRegular, GiftRegular, QrCodeRegular } from '@fluentui/react-icons';
+import { CameraRegular, CameraOffRegular, SearchRegular, CheckmarkCircleRegular, GiftRegular, QrCodeRegular, PersonRegular } from '@fluentui/react-icons';
 import { sb, META } from '../shared/supabase.js';
 import { StampCard } from '../shared/StampCard.jsx';
 import { PageHeader } from '../shared/PageHeader.jsx';
@@ -14,14 +14,14 @@ const useStyles = makeStyles({
   card: { padding: '20px', gap: '14px' },
   reader: {
     width: '100%', aspectRatio: '1', borderRadius: tokens.borderRadiusLarge, overflow: 'hidden',
-    background: `radial-gradient(circle at 50% 40%, rgba(201,162,39,.14), transparent 62%), ${tokens.colorNeutralBackground3}`, display: 'grid', placeItems: 'center',
+    background: tokens.colorNeutralBackground3, display: 'grid', placeItems: 'center',
     border: `1px solid ${tokens.colorNeutralStroke2}`,
     '& video': { objectFit: 'cover' },
   },
   placeholder: { display: 'grid', placeItems: 'center', gap: '8px', color: tokens.colorNeutralForeground3, textAlign: 'center', padding: '16px' },
   manual: { display: 'flex', gap: '8px', '& > span': { flex: 1 } },
   empty: { padding: '40px 16px', textAlign: 'center', color: tokens.colorNeutralForeground3, display: 'grid', placeItems: 'center', gap: '12px' },
-  art: { width: '84px', height: '84px', objectFit: 'contain', opacity: 0.9, filter: 'drop-shadow(0 8px 24px rgba(201,162,39,.25))' },
+  art: { fontSize: '48px', color: tokens.colorNeutralForeground4 },
 });
 
 export function Scan({ onChange }) {
@@ -76,7 +76,7 @@ export function Scan({ onChange }) {
         ) : (
           <Card className={s.card}>
             {estado ? <MessageBar intent={estado.intent}><MessageBarBody>{estado.text}</MessageBarBody></MessageBar>
-                    : <div className={s.empty}><img src="/brand/tijeras.png" alt="" className={s.art} />Aquí aparecerá la tarjeta del cliente.</div>}
+                    : <div className={s.empty}><PersonRegular className={s.art} />Aquí aparecerá la tarjeta del cliente.</div>}
           </Card>
         )}
       </div>
@@ -115,7 +115,7 @@ function Camara({ onCode }) {
     <>
       <div className={s.reader}>
         <div id="reader" style={{ width: '100%', display: on ? 'block' : 'none' }} />
-        {!on && <div className={s.placeholder}><img src="/brand/maquina.png" alt="" className={s.art} /><Text weight="semibold">Listo para escanear</Text><Text size={200}>Activa la cámara y apunta al QR del cliente</Text></div>}
+        {!on && <div className={s.placeholder}><CameraRegular className={s.art} /><Text weight="semibold">Listo para escanear</Text><Text size={200}>Activa la cámara y apunta al QR del cliente</Text></div>}
       </div>
       <Button appearance={on ? 'secondary' : 'primary'} icon={on ? <CameraOffRegular /> : <CameraRegular />} onClick={toggle}>
         {on ? 'Detener cámara' : 'Activar cámara'}

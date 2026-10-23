@@ -15,7 +15,7 @@ import { registrar, pushWallet, useNotify, cardUrl, copiar } from './actions.js'
 
 const useStyles = makeStyles({
   toolbar: { display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap', '& > :first-child': { flex: '1 1 220px', maxWidth: 'none' } },
-  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusXLarge, overflow: 'hidden', border: `1px solid ${tokens.colorNeutralStroke2}` },
+  table: { background: tokens.colorNeutralBackground1, borderRadius: tokens.borderRadiusLarge, overflow: 'hidden', boxShadow: tokens.shadow4 },
   row: { cursor: 'pointer' },
   hideSm: { '@media (max-width: 640px)': { display: 'none' } },
   progress: { display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px' },
@@ -62,7 +62,7 @@ export function Clients({ clientes, onChange }) {
                 </TableCell>
                 <TableCell className={s.hideSm}>{c.telefono || '—'}</TableCell>
                 <TableCell>
-                  {c.sellos >= META ? <Badge appearance="filled" color="brand" size="large" icon={<GiftRegular />}>Corte gratis</Badge> : (
+                  {c.sellos >= META ? <Badge appearance="filled" color="success" icon={<GiftRegular />}>Corte gratis</Badge> : (
                     <div className={s.progress}>
                       <ProgressBar value={c.sellos / META} thickness="large" style={{ flex: 1 }} />
                       <Text size={200}>{c.sellos}/{META}</Text>
